@@ -58,14 +58,23 @@ class TestTicTacToe:
         assert self.board.get_winner() == 1
 
     def test_draw(self):
-        # 填满棋盘产生平局
-        moves = [(0,0),(0,1),(0,2),
-                 (1,1),(1,0),(1,2),
-                 (2,0),(2,1),(2,2)]
+    # 平局棋谱：每一步都不会有人获胜
+        moves = [
+            (1,1),  # X
+            (0,0),  # O
+            (0,1),  # X
+            (2,1),  # O
+            (2,0),  # X
+            (0,2),  # O
+            (1,2),  # X
+            (1,0),  # O
+            (2,2)   # X
+        ]
         for i, m in enumerate(moves):
             self.board.make_move(m)
-            if i < 8:  # 最后一次之前不应结束
+            if i < 8:  # 前8步不应结束
                 assert not self.board.is_game_over()
+        # 棋盘填满，平局
         assert self.board.is_game_over()
         assert self.board.get_winner() == 0
 
