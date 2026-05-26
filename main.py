@@ -1,6 +1,9 @@
 from board import TicTacToeBoard
-from player import RandomPlayer
+from player import HumanPlayer, RandomPlayer
 from game import Game
+board = TicTacToeBoard()
+game = Game(board, HumanPlayer(), RandomPlayer())
+game.play()
 
 def run_random_vs_random(games=100):
     """运行多局随机对局并统计结果。"""
