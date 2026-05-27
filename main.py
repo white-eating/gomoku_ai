@@ -1,8 +1,9 @@
 from board import TicTacToeBoard
 from player import HumanPlayer, RandomPlayer
 from game import Game
+
 board = TicTacToeBoard()
-game = Game(board, HumanPlayer(), RandomPlayer())
+game = Game(board, HumanPlayer(), RandomPlayer()) # 通过改变此处可以调整玩家类别
 game.play()
 
 def run_random_vs_random(games=100):
@@ -20,4 +21,4 @@ def run_random_vs_random(games=100):
     print(f"平局:   {results[0]} ({results[0]/games*100:.1f}%)")
 
 if __name__ == "__main__":
-    run_random_vs_random(100)
+    run_random_vs_random(100) # 默认进行100局测试
