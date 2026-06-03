@@ -97,7 +97,10 @@ class CLI:
 if __name__ == "__main__":
     while True:
         board = TicTacToeBoard()
-        game = Game(board, HumanPlayer(), RandomPlayer())
+        from minimax import MinimaxPlayer
+        human_player = HumanPlayer()
+        ai_player = MinimaxPlayer(player_id=2,depth=9,use_alpha_beta=True)
+        game = Game(board, HumanPlayer(),ai_player)
         cli = CLI(game)
         result = cli.run()
         if result == "quit":
