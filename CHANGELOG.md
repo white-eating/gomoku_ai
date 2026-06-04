@@ -82,3 +82,20 @@ python main.py
 ```bash
 passed
 ```
+
+---
+
+# 第二周 — 改动记录（陈艾嘉）
+
+## 改动处
+
+- `cli.py`：`CLI` 类新增 `mode_name` 参数，标题由硬编码改为动态显示；`__main__` 块新增棋种选择菜单，五子棋模式下自动配置 `GomokuBoard` + `MinimaxPlayer`（`iterative=True`，`time_limit=2s`，`max_moves=30`，`eval_func=evaluate_gomoku`）；对弈循环用 `board.__class__()` 动态重建棋盘确保 `new` 兼容两种棋
+- `gui.py`：新增 `GomokuGUI` 类，实现 15×15 五子棋 Pygame 棋盘窗口（860×860，木色背景、深棕网格线、星位点、坐标标签）；棋子带高光，最后落子红点标记；鼠标悬停显示半透明预览棋子；点击交叉点落子黑白交替
+
+## 已实现功能
+
+- 启动时选择棋种（1=井字棋 3×3 / 2=五子棋 15×15），非法输入循环提示
+- 井字棋模式保持原有配置（`depth=9`，无时间限制）
+- 五子棋模式自动对接 `GomokuBoard` + 迭代加深搜索（每步限时 2 秒，候选走法上限 30）
+- `undo`/`new`/`quit` 命令对两种棋均兼容
+- Pygame 棋盘窗口：木色棋盘 + 黑白棋子 + 高光 + 最后落子标记 + hover 预览

@@ -6,8 +6,9 @@ from game import Game
 class CLI:
     """命令行交互界面，管理人类 vs AI 对弈流程。"""
 
-    def __init__(self, game: Game):
+    def __init__(self, game: Game, mode_name: str = "井字棋"):
         self.game = game
+        self.mode_name = mode_name
 
     def get_human_move(self):
         """读取人类输入，返回 ('move', (r,c)) 或 ('cmd', <命令名>)。"""
@@ -45,7 +46,7 @@ class CLI:
 
     def run(self):
         """主循环：人类输入 → 落子 → AI 回应 → 重复。"""
-        print("=== 井字棋 人机对弈 ===")
+        print(f"=== {self.mode_name} 人机对弈 ===")
         print("人类: X    AI: O")
         print("输入坐标如 '0 1'，或命令 undo / new / quit\n")
 
@@ -95,13 +96,40 @@ class CLI:
 
 
 if __name__ == "__main__":
+    from minimax import MinimaxPlayer, evaluate_gomoku
+
+    # ---- 棋种选择 ----
     while True:
+        print("=== 下棋AI 人机对弈 ===")
+        print("1. 井字棋 (3×3)")
+        print("2. 五子棋 (15×15)")
+        choice = input("请选择棋种 (1/2): ").strip()
+        if choice in ("1", "2"):
+            break
+        print("输入无效，请输入 1 或 2。\n")
+
+    if choice == "2":
+        from board import GomokuBoard
+        board = GomokuBoard()
+        ai_player = MinimaxPlayer(
+            player_id=2,
+            depth=6,
+            use_alpha_beta=True,
+            eval_func=evaluate_gomoku,
+            iterative=True,
+            time_limit=2.0,
+            max_moves=30,
+        )
+        mode_name = "五子棋"
+    else:
         board = TicTacToeBoard()
-        from minimax import MinimaxPlayer
-        human_player = HumanPlayer()
-        ai_player = MinimaxPlayer(player_id=2,depth=9,use_alpha_beta=True)
-        game = Game(board, HumanPlayer(),ai_player)
-        cli = CLI(game)
+        ai_player = MinimaxPlayer(player_id=2, depth=9, use_alpha_beta=True)
+        mode_name = "井字棋"
+
+    # ---- 对弈循环 ----
+    while True:
+        game = Game(board.__class__(), HumanPlayer(), ai_player)
+        cli = CLI(game, mode_name)
         result = cli.run()
         if result == "quit":
             break
