@@ -56,3 +56,29 @@ python main.py
 - `Game.do_move(move)` 是手动循环（CLI）专用的落子接口，会自动保存历史；`board.make_move(move)` 不会保存历史，直接使用会导致 undo 失效
 - `Game.play()` 内部已调用 `do_move()`，自动保存历史，直接用它也能配合 undo
 - 每次 undo 后 history 已消耗，连续 undo 会持续回退直到 history 为空
+
+# 第二周 — 改动记录（周佳明）
+
+## 改动处
+
+- 在 `minimax.py` 中加入 `alpha_beta`
+
+- 增加 `compare_minimax_and_alpha_beta`，用于验证剪枝前后结果一致
+
+- 实现 `iterative_deepening_search`，支持 2 秒时间阈值
+
+* 在 `board.py` 中新增 `GomokuBoard(Board)`
+
+- 实现 15×15 五子棋棋盘
+
+- 实现五子棋 8 方向扫描胜负判断
+
+- 补充 `evaluate_gomoku` 五元组基础评估函数
+
+- 新增 `week2_demo.py` 验证脚本
+
+- 新增第二周测试文件，测试结果为：
+
+```bash
+passed
+```
