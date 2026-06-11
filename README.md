@@ -59,3 +59,25 @@ ai = MinimaxPlayer(
 move = ai.get_move(board)
 print(move)
 ```
+
+### 第三周：置换表与实验测量
+
+- `ZobristHasher`：为每个棋盘位置和棋子类型生成 64 位随机数，计算局面 Zobrist 哈希。
+- `TranspositionTable`：使用字典缓存搜索过的局面，条目包含 `depth`、`value`、`flag`、`best_move`。
+- `alpha_beta(..., transposition_table=tt)`：Alpha-Beta 搜索已集成置换表，支持 EXACT / LOWER / UPPER 三类缓存边界。
+- `SearchStats`：新增 `tt_lookups`、`tt_hits`、`tt_stores` 和 `tt_hit_rate`，用于统计命中率。
+- `compare_transposition_table_speed`：对比普通 Alpha-Beta 与 Alpha-Beta + 置换表的节点数、耗时、命中率和加速比。
+- `MinimaxPlayer`：新增 `use_transposition_table` 参数，默认启用。
+
+## 第三周验证脚本
+
+```bash
+python week3_demo.py
+```
+
+输出内容包括：
+
+1. 普通 Alpha-Beta 与 Alpha-Beta + 置换表的结果一致性。
+2. 搜索节点数、剪枝次数、运行时间。
+3. 置换表查询次数、命中次数、命中率、缓存条目数量。
+4. 2 秒迭代加深搜索中置换表统计信息。

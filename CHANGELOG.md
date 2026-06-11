@@ -99,3 +99,31 @@ passed
 - 五子棋模式自动对接 `GomokuBoard` + 迭代加深搜索（每步限时 2 秒，候选走法上限 30）
 - `undo`/`new`/`quit` 命令对两种棋均兼容
 - Pygame 棋盘窗口：木色棋盘 + 黑白棋子 + 高光 + 最后落子标记 + hover 预览
+
+# 第三周 — 改动记录（周佳明）
+
+## 改动处
+
+- `minimax.py`：新增 `ZobristHasher`，为棋盘局面生成 64 位 Zobrist 哈希。
+- `minimax.py`：新增 `TranspositionTable` 与 `TranspositionEntry`，使用字典缓存已搜索局面。
+- `minimax.py`：扩展 `SearchStats`，新增 `tt_lookups`、`tt_hits`、`tt_stores`、`tt_hit_rate`。
+- `minimax.py`：将置换表集成到 `alpha_beta` 搜索中，支持 EXACT / LOWER / UPPER 三类缓存标记。
+- `minimax.py`：新增 `timed_alpha_beta` 和 `compare_transposition_table_speed`，用于测量命中率和加速效果。
+- `minimax.py`：`iterative_deepening_search` 在各层搜索之间复用同一个置换表。
+- `MinimaxPlayer`：新增 `use_transposition_table` 参数，默认启用置换表。
+- 新增 `week3_demo.py`：输出普通 Alpha-Beta 与 Alpha-Beta + 置换表的速度、节点数和命中率对比。
+- 新增 `test/test_week3_transposition.py`：验证 Zobrist 哈希稳定性、置换表结果一致性与统计字段。
+
+## 已实现功能
+
+- Zobrist 哈希 + 字典缓存置换表。
+- Alpha-Beta 搜索读取和写入置换表。
+- 迭代加深搜索复用置换表，提高深层搜索的 move ordering 和局面复用能力。
+- 置换表实验统计：查询次数、命中次数、命中率、缓存条目数、耗时、加速比。
+
+## 验证方式
+
+```bash
+pytest -q
+python week3_demo.py
+```
