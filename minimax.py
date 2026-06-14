@@ -636,7 +636,12 @@ class MinimaxPlayer(Player):
         if direct_wins:
             if len(direct_wins) == 1:
                 return direct_wins[0]
-            return board.get_legal_moves()[0]   # 多杀点，放弃防守
+            # 【修改处】多个杀点，无法全堵，从所有合法走法中选择对自己最有利的走法
+            best_move = max(
+                board.get_legal_moves(),
+                key=lambda m: self.eval_func(self._make_move_copy(board, m), self.player_id)
+            )
+            return best_move
 
         # 2b. 对手活三
         if open_threes:
@@ -686,3 +691,9 @@ class MinimaxPlayer(Player):
         stats.completed_depth = self.depth
         self.last_stats = stats
         return move
+
+    # 辅助方法：拷贝棋盘并落子，返回新棋盘
+    def _make_move_copy(self, board: Board, move: Move) -> Board:
+        new_board = board.copy()
+        new_board.make_move(move)
+        return new_board
